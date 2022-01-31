@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+
+  # Build the node server
+  app:
+    build: .
+    image: marvintrezlabs/admission-control
+    ports:
+      - "8443:8443"
+    
+    # Map the certificates folder
+    volumes:
+      - "./certs:/src/certs"
+
+    environment:
+          PORT:         8443
+          CERTS_FOLDER: "/src/certs"

@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trezlabs-deployment
+  labels:
+    app: trezlabs-admission-control
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: trezlabs-admission-control
+  template:
+    metadata:
+      labels:
+        app: trezlabs-admission-control
+    spec:
+      containers:
+        - name: admission-controll
+          image: marvintrezlabs/admission-control
+          ports:
+            - containerPort: 8443
+          imagePullPolicy: IfNotPresent
