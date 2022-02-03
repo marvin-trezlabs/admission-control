@@ -13,6 +13,9 @@
 # Define the certificates folder
 export CERT_FOLDER=${PWD}/certs
 
+# Delete certs
+rm -r $CERT_FOLDER
+
 # Verify the certs folder
 mkdir -p ${CERT_FOLDER}
 
@@ -58,8 +61,13 @@ docker-compose build --no-cache
 # Push the image to docker-hub
 docker-compose push
 
+# delete ns
+kubectl delete ns trezlabs
+
 # Deploy the resources to the cluster
 kubectl kustomize ./k8s-resources/ | kubectl apply -f -
+
+
 
 # # Test the server
 kubectl run tmp \

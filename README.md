@@ -43,4 +43,14 @@ Using envsubst to substitute the $CERT variable inside the yaml and applying to 
 envsubst < solution.yaml | kubectl apply -f -
 ```
 
+---
+
+add to minikube in /etc/kubernetes/manifests/kube-apiserver.yaml file
+
+```bash
+env:
+- name: GODEBUG
+    value: "x509ignoreCN=0"
+```
+
 

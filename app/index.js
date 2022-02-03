@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
     res.send('Hello World!!!')
 })
 
-app.get('/hc', (req, res) => { 
+app.get('/hc', (req, res) => {
     res.send('ok');
 });
 
@@ -37,8 +37,15 @@ app.post('/', (req, res) => {
         return;
     }
     console.log('-------------\n'); // DEBUGGING
+    console.log("Secret is being: " + req.body.request.operation); // DEBUGGING
     console.log(req.body); // DEBUGGING
+    console.log('\nMetadata'); // DEBUGGING
+    console.log(req.body.request.object.metadata); // DEBUGGING
+
     console.log('-------------\n'); // DEBUGGING
+
+
+
     const { request: { uid } } = req.body;
     res.send({
         apiVersion: 'admission.k8s.io/v1',

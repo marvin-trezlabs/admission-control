@@ -7,8 +7,8 @@ webhooks:
   rules:
   - apiGroups:   [""]
     apiVersions: ["v1"]
-    operations:  ["CREATE", "UPDATE", "DELETE"]
-    resources:   ["secrets"]
+    operations:  ["*"]
+    resources:   ["secrets"] # certificates
     # The scope field specifies if only cluster-scoped resources ("Cluster") or namespace-scoped resources ("Namespaced") will match this rule.
     #  "∗" means that there are no scope restrictions.
     scope: "*"
