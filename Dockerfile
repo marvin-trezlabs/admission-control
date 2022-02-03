@@ -1,5 +1,5 @@
 # Base image
-FROM node:12.18.2
+FROM node
 
 # Create the desired src folder
 WORKDIR /src

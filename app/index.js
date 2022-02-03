@@ -2,7 +2,7 @@ const express = require('express')
 const fs = require('fs')
 const https = require('https')
 const bodyParser = require('body-parser')
-const fetch = require("node-fetch");
+const fetch = require("cross-fetch");
 
 // The certificates folder
 const certsFolder = process.env.CERTS_FOLDER || './certs'
