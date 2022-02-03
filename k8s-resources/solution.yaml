@@ -1,0 +1,22 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: "cert-policy.example.com"
+webhooks:
+- name: "cert-policy.example.com"
+  rules:
+  - apiGroups:   [""]
+    apiVersions: ["v1"]
+    operations:  ["*"]
+    resources:   ["secrets"] # certificates
+    # The scope field specifies if only cluster-scoped resources ("Cluster") or namespace-scoped resources ("Namespaced") will match this rule.
+    #  "∗" means that there are no scope restrictions.
+    scope: "*"
+  clientConfig:
+    service:
+      name: "trezlabs-admission"
+      namespace: "trezlabs"
+    caBundle: $CERT
+  admissionReviewVersions: ["v1", "v1beta1"]
+  sideEffects: None
+  timeoutSeconds: 5

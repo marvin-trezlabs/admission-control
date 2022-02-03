@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trezlabs-deployment
+  labels:
+    app: trezlabs-admission-control
+  namespace: trezlabs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: trezlabs-admission-control
+  template:
+    metadata:
+      labels:
+        app: trezlabs-admission-control
+    spec:
+      containers:
+        - name: admission-control
+          image: marvintrezlabs/admission-control:latest
+          ports:
+            - containerPort: 8443        
+          env:
+          - name: TARGET_SECRET
+            value: "test-chart-2-crt-secret" 
+          imagePullPolicy: Always
+          livenessProbe:
+            httpGet:
+              port: 8443
+              path: /hc
+              scheme: HTTPS
