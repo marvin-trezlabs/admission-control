@@ -7,14 +7,16 @@ webhooks:
   rules:
   - apiGroups:   [""]
     apiVersions: ["v1"]
-    operations:  ["CREATE"]
+    operations:  ["CREATE", "UPDATE", "DELETE"]
     resources:   ["secrets"]
-    scope:       "Cluster"
+    # The scope field specifies if only cluster-scoped resources ("Cluster") or namespace-scoped resources ("Namespaced") will match this rule.
+    #  "∗" means that there are no scope restrictions.
+    scope: "*"
   clientConfig:
     service:
-      namespace: "trezlabs"
       name: "trezlabs-admission"
-    caBundle: $CERT
+      namespace: "trezlabs"
+    caBundle: "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUN0akNDQVo0Q0NRQ1U1U1lHdU1WVVhqQU5CZ2txaGtpRzl3MEJBUXNGQURBZE1Sc3dHUVlEVlFRRERCSjAKY21WNmJHRmljeTFoWkcxcGMzTnBiMjR3SGhjTk1qSXdNakF4TWpJeE1UVTFXaGNOTWpNd01qQXhNakl4TVRVMQpXakFkTVJzd0dRWURWUVFEREJKMGNtVjZiR0ZpY3kxaFpHMXBjM05wYjI0d2dnRWlNQTBHQ1NxR1NJYjNEUUVCCkFRVUFBNElCRHdBd2dnRUtBb0lCQVFEampVVGgvclFVbU1hT2NMSkF4aHFlemQrRGxRYm9IdTJRTEJzeFBJNUcKWEZxN2k2WG1GWmtrb0tGRXQ5a0I4OHBnSWtRYXV6NnVFQ2ttZ3JNdVQ0dnVRa2Vnd1g2eXFkTFc1WWZXdGtxcwpuRUdvZS9ycDJiSWFLNVlmcFptRFZEQXhGYnpFd25pUDQ1d1RWTWYvWkcwZWJaMmxiOGxYRjM4VHprdUN0cXBiClBzUXZESThlNzhUbkE4d2p4d3dIa2NXMzJzVmRtS2lxM09ZbmlzZjc3WFY5N3pDYzlZdVhlelVTV2JoTGFlb3gKUjNvOGVOSFowZkorNTF6ZEFCTC92a3BrYnFmZ3NheG9lVHVXM09LT3FLY1hpR0l1YUR0S1lRTWFZellHUXFLMQp5VStnWE5Bb1VnSVhkajVCaFc5QW93Q0dQcmZuUklIbHUvQVMxRUo5L2FXL0FnTUJBQUV3RFFZSktvWklodmNOCkFRRUxCUUFEZ2dFQkFCbUJYeEdIYmlsWG91dDdNUTQ0M0NCWFBCZGd2TE9WVXliREcwKzVPZFZBaHRtbmRiVHkKMEQ2R0xDNkpCLzFXNUtSUEtmMzVnYTBDZ3kvYmhQSlZadEVqTHd3dXZxWElhMENtTUZ6REtjMVFsaldtSVo2aQpQSldXRHVQS3FBNktHTUtFcVh5QWwzeE82elJHMzZuVUZsb01NdEluVThuc0s4SnRMUlRxaE5LZm81aC9OTEZuCllpUHlYaHhpYjBRdC9vak9ObUFKcVJjYlpaOWRsd0ZvbjZobWlMemdhYjdzVnV1S1VIc2JKTVVDYkQxZGVvQk8KdTJrbWF6UFdPeCtBbWxuSXJSNFJyaDlqeGJET1RiQ1pjYXlLeVAwTGZ3VXRqMVJhMzVIUDU3bGRqNDJEY2NtWQovbHR3SzBaQzltSEdYSjNQU2MrN2JHRitQRkRsVkFieWc3bz0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo="
   admissionReviewVersions: ["v1", "v1beta1"]
   sideEffects: None
   timeoutSeconds: 5

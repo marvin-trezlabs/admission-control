@@ -1,8 +1,8 @@
 # Base image
-FROM  node
+FROM node:12.18.2
 
 # Create the desired src folder
-WORKDIR src
+WORKDIR /src
 
 # Copy the required files
 COPY  ./app  .

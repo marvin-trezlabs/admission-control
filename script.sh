@@ -75,11 +75,11 @@ kubectl run tmp \
 
 
 # kubectl run tmp                 \
-#         -it --rm                \
-#         --image=busybox         \
-#         --restart=Never         \
-#         -v "./certs:/certs"     \
-#         -- sh -c "wget --ca-certificate=certs/ca.crt -O - -q -T 3 https://trezlabs-admission.trezlabs.svc:8443"
+        # -it --rm                \
+        # --image=busybox         \
+        # --restart=Never         \
+        # -v "./certs:/certs"     \
+        # -- sh -c "wget --ca-certificate=certs/ca.crt -O - -q -T 3 https://trezlabs-admission.trezlabs.svc:8443"
 
 
 # This wont work because of need the certificate

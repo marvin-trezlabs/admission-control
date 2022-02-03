@@ -4,6 +4,7 @@ metadata:
   name: trezlabs-deployment
   labels:
     app: trezlabs-admission-control
+  namespace: trezlabs
 spec:
   replicas: 1
   selector:
@@ -15,8 +16,13 @@ spec:
         app: trezlabs-admission-control
     spec:
       containers:
-        - name: admission-controll
-          image: marvintrezlabs/admission-control
+        - name: admission-control
+          image: luisbodev/admission-control:latest
           ports:
             - containerPort: 8443
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
+          livenessProbe:
+            httpGet:
+              port: 8443
+              path: /hc
+              scheme: HTTPS
