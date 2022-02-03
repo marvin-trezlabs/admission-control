@@ -14,7 +14,7 @@
 export CERT_FOLDER=${PWD}/certs
 
 # Delete certs
-rm -r $CERT_FOLDER
+rm -rf $CERT_FOLDER
 
 # Verify the certs folder
 mkdir -p ${CERT_FOLDER}
@@ -25,8 +25,8 @@ openssl     req         \
             -x509       \
             -nodes      \
             -days       365 \
-            -subj       '/CN=trezlabs-admission' \
             -keyout     ${CERT_FOLDER}/ca.key \
+            -subj       '/CN=trezlabs-admission' \
             -out        ${CERT_FOLDER}/ca.crt
 
 # Create the server key:
@@ -62,34 +62,5 @@ docker-compose build --no-cache
 docker-compose push
 
 # delete ns
-kubectl delete ns trezlabs
+# kubectl delete ns trezlabs
 
-# Deploy the resources to the cluster
-kubectl kustomize ./k8s-resources/ | kubectl apply -f -
-
-
-
-# # Test the server
-kubectl run tmp \
-  --image=curlimages/curl \
-  --restart=Never \
-  -it \
-  --rm \
-  -- \
-  curl \
-  --insecure \
-  https://trezlabs-admission.trezlabs.svc:8443
-
-
-
-# kubectl run tmp                 \
-        # -it --rm                \
-        # --image=busybox         \
-        # --restart=Never         \
-        # -v "./certs:/certs"     \
-        # -- sh -c "wget --ca-certificate=certs/ca.crt -O - -q -T 3 https://trezlabs-admission.trezlabs.svc:8443"
-
-
-# This wont work because of need the certificate
-
-# kubectl run tmp --image=busybox --restart=Never -it --rm -- wget -O - -q -T 3 https://trezlabs-admission.trezlabs.svc:8443

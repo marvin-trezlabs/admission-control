@@ -2,6 +2,7 @@ const express = require('express')
 const fs = require('fs')
 const https = require('https')
 const bodyParser = require('body-parser')
+const fetch = require("node-fetch");
 
 // The certificates folder
 const certsFolder = process.env.CERTS_FOLDER || './certs'
@@ -20,7 +21,7 @@ const options = {
 
 //Main endpoint
 app.get('/', (req, res) => {
-    res.send('Hello World!!!')
+    res.send('Admission control app for the ActiveMQ cert')
 })
 
 app.get('/hc', (req, res) => {
@@ -36,15 +37,28 @@ app.post('/', (req, res) => {
         res.status(400).send();
         return;
     }
-    console.log('-------------\n'); // DEBUGGING
-    console.log("Secret is being: " + req.body.request.operation); // DEBUGGING
-    console.log(req.body); // DEBUGGING
-    console.log('\nMetadata'); // DEBUGGING
-    console.log(req.body.request.object.metadata); // DEBUGGING
+    let operation = req.body.request.operation;
+    let secret_name = req.body.request.name;
+    let target_secret = process.env.TARGET_SECRET || ''
 
-    console.log('-------------\n'); // DEBUGGING
-
-
+    if (target_secret !== '' && secret_name == target_secret){
+        console.log('-------------\n'); // DEBUGGING
+        console.log("Certificate is being: " + operation); // DEBUGGING
+        //DUMMY POST PETITION
+        fetch('https://jsonplaceholder.typicode.com/posts', {
+            method: 'POST',
+            body: JSON.stringify({
+                title: `CERTIFICATE EVENT OCURRED: ${operation}`,
+                body: req.body.request.object ? req.body.request.object.metadata : 'Was a delete operation'  ,
+                userId: 1,
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+            })
+        .then((response) => response.json())
+        .then((json) => console.log(json));
+    }
 
     const { request: { uid } } = req.body;
     res.send({

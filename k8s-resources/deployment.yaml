@@ -17,9 +17,12 @@ spec:
     spec:
       containers:
         - name: admission-control
-          image: luisbodev/admission-control:latest
+          image: marvintrezlabs/admission-control:latest
           ports:
-            - containerPort: 8443
+            - containerPort: 8443        
+          env:
+          - name: TARGET_SECRET
+            value: "test-chart-2-crt-secret" 
           imagePullPolicy: Always
           livenessProbe:
             httpGet:
