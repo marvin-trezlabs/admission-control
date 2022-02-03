@@ -26,7 +26,7 @@ envsubst is for sustituying the ENV $CERT variable on the yaml
 envsubst < ./k8s-resources/solution.yaml | kubectl apply -f -
 ```
 ### View the server logs
-Now you can crate a certificate (default expected name: test-chart-2) and see the events.
+Now you can create a secret (default expected name: test-chart-2-crt-secret) and see the events.
 ```bash
 kubectl logs $(kubectl get pod -n trezlabs -o jsonpath="{.items[0].metadata.name}") -n trezlabs --follow
 ```
