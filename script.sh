@@ -19,37 +19,45 @@ rm -rf $CERT_FOLDER
 # Verify the certs folder
 mkdir -p ${CERT_FOLDER}
 
-# Create the CA key and certificate:
-openssl     req         \
-            -new        \
-            -x509       \
-            -nodes      \
-            -days       365 \
-            -keyout     ${CERT_FOLDER}/ca.key \
-            -subj       '/CN=trezlabs-admission' \
-            -out        ${CERT_FOLDER}/ca.crt
+# Create CA Key
+openssl genrsa -aes256 -out ${CERT_FOLDER}/ca.key 2048
 
-# Create the server key:
-openssl     genrsa      \
-            -out        ${CERT_FOLDER}/tls.key \
-            2048        
+# CA certificate
+openssl req \
+        -new \
+        -x509 \
+        -subj "/CN=trezlabs-admision" \
+        -extensions v3_ca \
+        -days 3650 \
+        -key ${CERT_FOLDER}/ca.key \
+        -sha256 \
+        -out ${CERT_FOLDER}/ca.crt \
+        -config san-config/san.cnf
 
-# Create a certificate signing request:
-openssl     req         \
-            -new        \
-            -subj       '/CN=trezlabs-admission.trezlabs.svc' \
-            -key        ${CERT_FOLDER}/tls.key \
-            -out        ${CERT_FOLDER}/tls.csr
+# Generate Key Pair
+openssl genrsa -out ${CERT_FOLDER}/tls.key 2048
 
-# Create the server certificate:
-openssl     x509        \
-            -CAcreateserial \
-            -req        \
-            -days       3650 \
-            -in         ${CERT_FOLDER}/tls.csr \
-            -CA         ${CERT_FOLDER}/ca.crt \
-            -CAkey      ${CERT_FOLDER}/ca.key \
-            -out        ${CERT_FOLDER}/tls.crt
+# Create Cert Signing Request
+openssl req \
+        -subj "/CN=trezlabs-admission.trezlabs.svc" \
+        -extensions v3_req \
+        -sha256 \
+        -new \
+        -key ${CERT_FOLDER}/tls.key \
+        -out ${CERT_FOLDER}/tls.csr
+
+# Create Certificate
+openssl x509 \
+        -req \
+        -extensions v3_req \
+        -days 3650 \
+        -sha256 \
+        -in ${CERT_FOLDER}/tls.csr \
+        -CA ${CERT_FOLDER}/ca.crt \
+        -CAkey ${CERT_FOLDER}/ca.key \
+        -CAcreateserial \
+        -out ${CERT_FOLDER}/tls.crt \
+        -extfile san-config/san.cnf
 
 # Copy the certificates to the K8S-resources folder so it can be 
 # used as secret for the deploymnets

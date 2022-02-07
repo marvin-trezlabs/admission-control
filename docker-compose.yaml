@@ -5,7 +5,7 @@ services:
   # Build the node server
   app:
     build: .
-    image: marvintrezlabs/admission-control
+    image: luisbodev/admission-control
     ports:
       - "8443:8443"
     

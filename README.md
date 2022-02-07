@@ -31,7 +31,17 @@ Now you can create a secret (default expected name: test-chart-2-crt-secret) and
 kubectl logs $(kubectl get pod -n trezlabs -o jsonpath="{.items[0].metadata.name}") -n trezlabs --follow
 ```
 
-<!-- ### Problem with Docker Hub:
+
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+---
+## Problem with Docker Hub server when pulling images:
 ---
 If having problems of delay of pushing images to docker hub, you can kinda set up the context of minikube to build the image in minikube cluster.
 
@@ -42,9 +52,9 @@ Now you can execute commands in the context of minikube docker
 ```bash
 docker ps
 ```
-And you can run the ./script.sh again -->
+And you can run the ./script.sh again
 
-<!-- ## The solution
+## The solution
 ---
 Encode the certificate in base64
 ```bash
@@ -62,21 +72,4 @@ Using envsubst to substitute the $CERT variable inside the yaml and applying to 
 envsubst < solution.yaml | kubectl apply -f -
 envsubst < ./k8s-resources/solution.yaml | kubectl kustomize ./k8s-resources/ | kubectl apply -f -
 
-``` -->
-
----
-
-### KNOWN ISSUE:
-Seems like GO doesnt allow legacy CN certificates and expects a SAN format certificate.
-In order to fix this, we will temporally disable this debug option.
-We later research about SAN certificates.
-
-To do that, add the following content to: /etc/kubernetes/manifests/kube-apiserver.yaml
-Important: In the IMAGE section of the yaml
-(Rename the kube-apiserver.yaml file if necessary)
-```bash
-name: kube-apiserver
-env:
-- name: GODEBUG
-    value: "x509ignoreCN=0"
 ```
